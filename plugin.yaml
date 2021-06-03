@@ -1,0 +1,7 @@
+name: "gatekeeper"
+version: "0.1.0"
+usage: conftest gatekeeper [--parameter params_file.yaml] k8s_manifest_file.yaml -- [flags to pass to `conftest test`]
+description: |-
+  This plugin tranforms input into the format (input.review.object) expected by 
+  gatekeeper's constraint templates allowing you to reuse the policies with conftest
+command: $CONFTEST_PLUGIN_DIR/gatekeeper-conftest
