@@ -7,3 +7,4 @@ gatekeeper-conftest
 .idea
 
 dist/
+.gatekeeper-conftest

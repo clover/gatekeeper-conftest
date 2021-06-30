@@ -54,48 +54,23 @@ Exit code of 5: Plugin failure.
 ## Example
 
 ```
-$ conftest gatekeeper -h
-$ conftest gatekeeper --parameters example/parameters.yaml example/k8s_app.yaml -- --policy example/policy/ --all-namespaces
+$ conftest gatekeeper --parameters example/parameters.yaml example/k8s_app.yaml -- --policy example/policy/ --all-namespaces --no-fail
+FAIL - .gatekeeper-conftest/CronJob_hello_pods.json - k8spspallowprivilegeescalationcontainer - Privilege escalation container is not allowed: hello
+FAIL - .gatekeeper-conftest/DaemonSet_fluentd-elasticsearch_pods.json - k8spspallowprivilegeescalationcontainer - Privilege escalation container is not allowed: fluentd-elasticsearch
+FAIL - .gatekeeper-conftest/Job_hello_pods.json - k8spspallowprivilegeescalationcontainer - Privilege escalation container is not allowed: hello
+FAIL - .gatekeeper-conftest/ReplicaSet_nginx-deployment_pods.json - k8spspallowprivilegeescalationcontainer - Privilege escalation container is not allowed: nginx
+FAIL - .gatekeeper-conftest/Deployment_nginx-deployment_pods.json - k8spspallowprivilegeescalationcontainer - Privilege escalation container is not allowed: nginx
+FAIL - .gatekeeper-conftest/Deployment_nginx-deployment_pods.json - capabilities - container <nginx> is not dropping all required capabilities. Container must drop all of ["must_drop"]
+FAIL - .gatekeeper-conftest/Job_hello_pods.json - capabilities - container <hello> is not dropping all required capabilities. Container must drop all of ["must_drop"]
+FAIL - .gatekeeper-conftest/ReplicaSet_nginx-deployment_pods.json - capabilities - container <nginx> is not dropping all required capabilities. Container must drop all of ["must_drop"]
+FAIL - .gatekeeper-conftest/CronJob_hello_pods.json - capabilities - container <hello> is not dropping all required capabilities. Container must drop all of ["must_drop"]
+FAIL - .gatekeeper-conftest/DaemonSet_fluentd-elasticsearch_pods.json - capabilities - container <fluentd-elasticsearch> is not dropping all required capabilities. Container must drop all of ["must_drop"]
+FAIL - .gatekeeper-conftest/DaemonSet_fluentd-elasticsearch_pods.json - k8spspprivileged - Privileged container is not allowed: fluentd-elasticsearch, securityContext: {"allowPrivilegeEscalation": true, "privileged": true, "readOnlyRootFilesystem": false, "runAsNonRoot": false, "runAsUser": 0}
+FAIL - .gatekeeper-conftest/Deployment_nginx-deployment_pods.json - k8spspreadonlyrootfilesystem - only read-only root filesystem container is allowed: nginx
+FAIL - .gatekeeper-conftest/Job_hello_pods.json - k8spspreadonlyrootfilesystem - only read-only root filesystem container is allowed: hello
+FAIL - .gatekeeper-conftest/ReplicaSet_nginx-deployment_pods.json - k8spspreadonlyrootfilesystem - only read-only root filesystem container is allowed: nginx
+FAIL - .gatekeeper-conftest/DaemonSet_fluentd-elasticsearch_pods.json - k8spspreadonlyrootfilesystem - only read-only root filesystem container is allowed: fluentd-elasticsearch
+FAIL - .gatekeeper-conftest/CronJob_hello_pods.json - k8spspreadonlyrootfilesystem - only read-only root filesystem container is allowed: hello
 
-
-Testing CronJob - hello:
-FAIL - - k8spspreadonlyrootfilesystem - only read-only root filesystem container is allowed: hello
-FAIL - - k8spspallowprivilegeescalationcontainer - Privilege escalation container is not allowed: hello
-FAIL - - capabilities - container <hello> is not dropping all required capabilities. Container must drop all of ["must_drop"]
-
-7 tests, 4 passed, 0 warnings, 3 failures, 0 exceptions
-
-Testing Job - hello:
-FAIL - - k8spspreadonlyrootfilesystem - only read-only root filesystem container is allowed: hello
-FAIL - - k8spspallowprivilegeescalationcontainer - Privilege escalation container is not allowed: hello
-FAIL - - capabilities - container <hello> is not dropping all required capabilities. Container must drop all of ["must_drop"]
-
-7 tests, 4 passed, 0 warnings, 3 failures, 0 exceptions
-
-Testing Deployment - nginx-deployment:
-FAIL - - k8spspreadonlyrootfilesystem - only read-only root filesystem container is allowed: nginx
-FAIL - - k8spspallowprivilegeescalationcontainer - Privilege escalation container is not allowed: nginx
-FAIL - - capabilities - container <nginx> is not dropping all required capabilities. Container must drop all of ["must_drop"]
-
-7 tests, 4 passed, 0 warnings, 3 failures, 0 exceptions
-
-Testing ReplicaSet - nginx-deployment:
-FAIL - - k8spspreadonlyrootfilesystem - only read-only root filesystem container is allowed: nginx
-FAIL - - k8spspallowprivilegeescalationcontainer - Privilege escalation container is not allowed: nginx
-FAIL - - capabilities - container <nginx> is not dropping all required capabilities. Container must drop all of ["must_drop"]
-
-7 tests, 4 passed, 0 warnings, 3 failures, 0 exceptions
-
-Testing DaemonSet - fluentd-elasticsearch:
-FAIL - - k8spspallowprivilegeescalationcontainer - Privilege escalation container is not allowed: fluentd-elasticsearch
-FAIL - - capabilities - container <fluentd-elasticsearch> is not dropping all required capabilities. Container must drop all of ["must_drop"]
-FAIL - - k8spspprivileged - Privileged container is not allowed: fluentd-elasticsearch, securityContext: {"allowPrivilegeEscalation": true, "privileged": true, "readOnlyRootFilesystem": false, "runAsNonRoot": false, "runAsUser": 0}
-FAIL - - k8spspreadonlyrootfilesystem - only read-only root filesystem container is allowed: fluentd-elasticsearch
-
-7 tests, 3 passed, 0 warnings, 4 failures, 0 exceptions
-
-Testing Service - my-service:
-
-7 tests, 7 passed, 0 warnings, 0 failures, 0 exceptions
-Error: execute plugin: plugin exec: exit status 3
+77 tests, 61 passed, 0 warnings, 16 failures, 0 exceptions
 ```
