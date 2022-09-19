@@ -129,7 +129,7 @@ func runTests(args []string, parametersFile string) error {
 	}
 
 	yamlReader := yamlutil.NewDocumentDecoder(inputFileReader)
-	yamlBuf := make([]byte, 100*1024)
+	yamlBuf := make([]byte, 1024*1024)
 
 	// build gatekeeper compatible input object for each yaml document found in input manifest
 	for {
