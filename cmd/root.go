@@ -27,7 +27,7 @@ var tmpPluginDir = ".gatekeeper-conftest/"
 var rootCmd = &cobra.Command{
 	Use:   "gatekeeper [flags] k8s_file.yaml -- [flags to pass to `conftest test`]",
 	Short: "conftest plugin to make input compatible with gatekeeper constrint templates",
-	Long: `This plugin tranforms input into the format (input.review.object) expected by 
+	Long: `This plugin tranforms input into the format (input.review.object) expected by
 gatekeeper's constraint templates allowing you to reuse the policies with conftest`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) < 1 {
@@ -129,7 +129,7 @@ func runTests(args []string, parametersFile string) error {
 	}
 
 	yamlReader := yamlutil.NewDocumentDecoder(inputFileReader)
-	yamlBuf := make([]byte, 10*1024)
+	yamlBuf := make([]byte, 1024*1024)
 
 	// build gatekeeper compatible input object for each yaml document found in input manifest
 	for {
