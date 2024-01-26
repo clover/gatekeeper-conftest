@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"io"
-	"io/ioutil"
 	jsonutil "k8s.io/apimachinery/pkg/util/json"
 	yamlutil "k8s.io/apimachinery/pkg/util/yaml"
 	"os"
@@ -32,7 +31,11 @@ gatekeeper's constraint templates allowing you to reuse the policies with confte
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) < 1 {
 			fmt.Println("Error: Missing input.\n\nHelp:")
-			cmd.Help()
+			err := cmd.Help()
+			if err != nil {
+				fmt.Printf("Error: %s\n", err)
+			}
+
 			os.Exit(5)
 		}
 		err := runTests(args, parametersFile)
@@ -54,10 +57,6 @@ func Execute() {
 
 func init() {
 	rootCmd.Flags().StringVarP(&parametersFile, "parameters", "p", "", "path to file conatining paramater values used in constraint templates")
-}
-
-func createFile(filename string, contents string) {
-
 }
 
 func runTests(args []string, parametersFile string) error {
@@ -91,10 +90,19 @@ func runTests(args []string, parametersFile string) error {
 			return fmt.Errorf("Expecting file for parameters. Got directory.")
 		}
 
-		parametersYaml, err := ioutil.ReadFile(parametersFile)
+		// Open the file for reading
+		file, err := os.Open(parametersFile)
+		if err != nil {
+			return fmt.Errorf("open parameters file: %w", err)
+		}
+		defer file.Close()
+
+		// Read the file contents
+		parametersYaml, err := io.ReadAll(file)
 		if err != nil {
 			return fmt.Errorf("read parameters file: %w", err)
 		}
+
 		parametersJson, err := yamlutil.ToJSON(parametersYaml)
 		if err != nil {
 			return fmt.Errorf("convert parameters yaml to json: %w", err)
@@ -129,7 +137,7 @@ func runTests(args []string, parametersFile string) error {
 	}
 
 	yamlReader := yamlutil.NewDocumentDecoder(inputFileReader)
-	yamlBuf := make([]byte, 1024*1024)
+	yamlBuf := make([]byte, 2048*1024)
 
 	// build gatekeeper compatible input object for each yaml document found in input manifest
 	for {
